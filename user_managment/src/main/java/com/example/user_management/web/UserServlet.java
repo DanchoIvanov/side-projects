@@ -38,36 +38,25 @@ public class UserServlet extends HttpServlet {
         String action = request.getServletPath();
 
         try {
-            switch(action.hashCode()) {
-                case -2075846216:
-                    if (action.equals("/update")) {
-                        this.updateUser(request, response);
-                        return;
-                    }
+            switch(action) {
+                case "/update":
+                    this.updateUser(request, response);
                     break;
-                case 1509137:
-                    if (action.equals("/new")) {
-                        this.showNewForm(request, response);
-                        return;
-                    }
+                case "/new":
+                    this.showNewForm(request, response);
                     break;
-                case 46513849:
-                    if (action.equals("/edit")) {
-                        this.showEditForm(request, response);
-                        return;
-                    }
+                case "/edit":
+                    this.showEditForm(request, response);
                     break;
-                case 1722508954:
-                    if (action.equals("/delete")) {
-                        this.deleteUser(request, response);
-                        return;
-                    }
+                case "/delete":
+                    this.deleteUser(request, response);
                     break;
-                case 1874174888:
-                    if (action.equals("/insert")) {
-                        this.insertUser(request, response);
-                        return;
-                    }
+                case "/insert":
+                    this.insertUser(request, response);
+                    return;
+                default:
+                    this.listUser(request, response);
+                    break;
             }
 
             this.listUser(request, response);
