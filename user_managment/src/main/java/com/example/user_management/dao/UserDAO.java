@@ -1,6 +1,6 @@
-package com.example.user_managment.dao;
+package com.example.user_management.dao;
 
-import com.example.user_managment.model.User;
+import com.example.user_management.model.User;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserDAO {
 
-    private String jdbcURL = "jdbc:mysql://localhost:3306/user_management?useSSL=false";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/user_management";
     private String jdbcUsername = "root";
     private String jdbcPassword = "Parola";
     private static final String INSERT_USERS_SQL = "INSERT INTO users  (first_name, last_name, birthdate, phone_number, email) VALUES  (?, ?, ?, ?, ?);";
@@ -23,7 +23,14 @@ public class UserDAO {
     }
 
     private Connection getConnection() throws SQLException {
-       return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return connection;
     }
     public void insertUser(User user) throws SQLException {
         System.out.println(INSERT_USERS_SQL);

@@ -1,4 +1,4 @@
-package com.example.user_managment.web;
+package com.example.user_management.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,23 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.user_managment.dao.UserDAO;
-import com.example.user_managment.model.User;
+import com.example.user_management.dao.UserDAO;
+import com.example.user_management.model.User;
 
-@WebServlet({"/"})
+@WebServlet(urlPatterns = {"/"})
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
-    public UserServlet() {
+    public UserServlet() throws SQLException {
+        this.userDAO = new UserDAO();
     }
 
     public void init() {
-        try {
-            this.userDAO = new UserDAO();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,25 +37,23 @@ public class UserServlet extends HttpServlet {
             switch(action) {
                 case "/update":
                     this.updateUser(request, response);
-                    break;
+                    return;
                 case "/new":
                     this.showNewForm(request, response);
-                    break;
+                    return;
                 case "/edit":
                     this.showEditForm(request, response);
-                    break;
+                    return;
                 case "/delete":
                     this.deleteUser(request, response);
-                    break;
+                    return;
                 case "/insert":
                     this.insertUser(request, response);
                     return;
                 default:
                     this.listUser(request, response);
-                    break;
+                    return;
             }
-
-            this.listUser(request, response);
         } catch (SQLException var5) {
             throw new ServletException(var5);
         }
@@ -86,10 +80,10 @@ public class UserServlet extends HttpServlet {
     }
 
     private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        String firstName = request.getParameter("first_name");
-        String lastName = request.getParameter("last_name");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthdate"));
-        String phoneNumber = request.getParameter("phone_number");
+        String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         User newUser = new User(firstName, lastName, birthDate, phoneNumber, email);
         this.userDAO.insertUser(newUser);
@@ -98,10 +92,10 @@ public class UserServlet extends HttpServlet {
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        String firstName = request.getParameter("first_name");
-        String lastName = request.getParameter("last_name");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthdate"));
-        String phoneNumber = request.getParameter("phone_number");
+        String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         User user = new User(id, firstName, lastName, birthDate, phoneNumber, email);
         this.userDAO.updateUser(user);
