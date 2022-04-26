@@ -59,19 +59,20 @@
                         <fieldset class="form-group">
                             <label>Birthdate</label> <input type="date"
                                                             value="<c:out value='${user.birthdate}' />" class="form-control"
-                                                            name="birthdate" required="required">
+                                                            name="birthdate" required="required" max='${today}'>
                         </fieldset>
 
                         <fieldset class="form-group">
                             <label>Phone number</label> <input type="tel"
                                                             value="<c:out value='${user.phoneNumber}' />" class="form-control"
-                                                            name="phoneNumber" required="required">
+                                                            name="phoneNumber" required="required" pattern='${initParam['phonePattern']}'
+                                                               title='${initParam['phoneTitle']}'>
                         </fieldset>
 
                         <fieldset class="form-group">
-                            <label>Email address</label> <input type="text"
+                            <label>Email address</label> <input type="email"
                                                              value="<c:out value='${user.email}' />" class="form-control"
-                                                             name="email">
+                                                             name="email", pattern='${initParam['emailPattern']}' title='${initParam['emailTitle']}'>
                         </fieldset>
 
                     <button type="submit" class="btn btn-success">Save</button>

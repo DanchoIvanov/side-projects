@@ -3,6 +3,8 @@
          pageEncoding="UTF-8"%>
 <html>
 <head>
+    <script src="/searchTable.js" type="text/javascript"></script>
+    <script src="/sortTable.js" type="text/javascript"></script>
     <title>User Management Application</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -37,8 +39,8 @@
             <thead>
             <tr>
                 <th>First name</th>
-                <th onclick="sortTable(0)">Last name</th>
-                <th onclick="sortTable(1)">Birthdate</th>
+                <th>Last name<input type="button" style="margin-left: 10px;" id="lastNameButton" name="button" value="-" onclick="sortTable(1)"/></th>
+                <th>Birthdate<input type="button" style="margin-left: 10px;" id="birthdateButton" name="button" value="-" onclick="sortTable(2)"/></th>
                 <th>Phone number</th>
                 <th>Email</th>
             </tr>
@@ -62,8 +64,8 @@
             </tbody>
 
         </table>
-
         <script>
+            //TODO: move the script to a separate js file
             function searchTable() {
                 let input, filter, found, table, tr, td, i, j;
                 input = document.getElementById("myInput");
@@ -87,41 +89,31 @@
             }
 
             function sortTable(n) {
-                let table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0, isDate;
+                let table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0, isDate,
+                    lastNameButton, birthdateButton;
                 table = document.getElementById("myTable");
                 switching = true;
-                // Set the sorting direction to ascending:
                 dir = "asc";
-                /* Make a loop that will continue until
-                no switching has been done: */
-                isDate = n == 1;
+                isDate = n == 2;
+                lastNameButton = document.getElementById("lastNameButton");
+                birthdateButton = document.getElementById("birthdateButton")
                 while (switching) {
-                    // Start by saying: no switching is done:
                     switching = false;
                     rows = table.rows;
-                    /* Loop through all table rows (except the
-                    first, which contains table headers): */
                     for (i = 1; i < (rows.length - 1); i++) {
-                        // Start by saying there should be no switching:
                         shouldSwitch = false;
-                        /* Get the two elements you want to compare,
-                        one from current row and one from the next: */
                         x = rows[i].getElementsByTagName("TD")[n];
                         y = rows[i + 1].getElementsByTagName("TD")[n];
-                        /* Check if the two rows should switch place,
-                        based on the direction, asc or desc: */
                         if (isDate) {
                             if (dir == "asc") {
                                 if (Date.parse(x.innerHTML) > Date.parse(y.innerHTML)) {
                                     console.log("x value is: " + Date.parse(x.innerHTML))
                                     console.log("y's value is: " + Date.parse(y.innerHTML))
-                                    // If so, mark as a switch and break the loop:
                                     shouldSwitch = true;
                                     break;
                                 }
                             } else if (dir == "desc") {
                                 if (Date.parse(x.innerHTML) < Date.parse(y.innerHTML)) {
-                                    // If so, mark as a switch and break the loop:
                                     shouldSwitch = true;
                                     break;
                                 }
@@ -129,13 +121,11 @@
                         } else {
                             if (dir == "asc") {
                                 if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                                    // If so, mark as a switch and break the loop:
                                     shouldSwitch = true;
                                     break;
                                 }
                             } else if (dir == "desc") {
                                 if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                                    // If so, mark as a switch and break the loop:
                                     shouldSwitch = true;
                                     break;
                                 }
@@ -143,19 +133,31 @@
                         }
                     }
                     if (shouldSwitch) {
-                        /* If a switch has been marked, make the switch
-                        and mark that a switch has been done: */
                         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                         switching = true;
-                        // Each time a switch is done, increase this count by 1:
-                        switchCount ++;
+                        switchCount++;
                     } else {
-                        /* If no switching has been done AND the direction is "asc",
-                        set the direction to "desc" and run the while loop again. */
                         if (switchCount == 0 && dir == "asc") {
                             dir = "desc";
                             switching = true;
                         }
+                    }
+                }
+                if (dir == "asc") {
+                    if (isDate) {
+                        birthdateButton.value = "↓";
+                        lastNameButton.value = "-";
+                    } else {
+                        birthdateButton.value = "-";
+                        lastNameButton.value = "↓";
+                    }
+                } else if (dir == "desc") {
+                    if (isDate) {
+                        birthdateButton.value = "↑";
+                        lastNameButton.value = "-";
+                    } else {
+                        birthdateButton.value = "-";
+                        lastNameButton.value = "↑";
                     }
                 }
             }

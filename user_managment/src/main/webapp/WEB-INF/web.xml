@@ -7,4 +7,24 @@
         <exception-type>java.lang.Exception</exception-type>
         <location>/Error.jsp</location>
     </error-page>
+
+    <context-param>
+        <param-name>phonePattern</param-name>
+        <param-value>[0-9]{10}</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>phoneTitle</param-name>
+        <param-value>The phone number must contain 10 digits</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>emailPattern</param-name>
+        <param-value>^[A-Za-z0-9+_.-]+@(.+)$</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>emailTitle</param-name>
+        <param-value>Please provide a valid email address</param-value>
+    </context-param>
 </web-app>
