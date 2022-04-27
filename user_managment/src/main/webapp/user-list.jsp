@@ -17,7 +17,7 @@
     <nav class="navbar navbar-expand-md navbar-dark"
          style="background-color: blue">
         <div>
-            <a href="http://localhost:8080/user_managment_war_exploded/" class="navbar-brand"> User
+            <a href="<%=request.getContextPath()%>/list" class="navbar-brand"> User
                 Management Application </a>
         </div>
     </nav>
